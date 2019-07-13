@@ -1,5 +1,7 @@
 package com.ihit.school.account.service.interfac;
 
+import com.ihit.school.account.model.AcademicInfo;
+
 import java.util.List;
 
 /**
@@ -7,4 +9,5 @@ import java.util.List;
  */
 public interface AcademicInfoService {
     List allAcademicInfo();
+    AcademicInfo findById(Integer id);
 }
