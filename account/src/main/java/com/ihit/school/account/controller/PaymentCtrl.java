@@ -23,7 +23,8 @@ public class PaymentCtrl {
     public ModelAndView paymentDetails(ModelAndView modelAndView, @PathVariable Integer id) {
         List<Stmt> stmtList = new ArrayList<>();
         stmtList = stmtService.findAllByAcaId(id);
-        modelAndView.setViewName("studentList");
+        modelAndView.addObject("payDetails", stmtList);
+        modelAndView.setViewName("paymentDetails");
         return modelAndView;
     }
 }

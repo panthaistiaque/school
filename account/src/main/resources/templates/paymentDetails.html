@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.thymeleaf.org" class="no-js" lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <span th:include="fragment/hader::headerPortion" th:remove="tag"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <span th:include="fragment/navbar::navbarPortion" th:remove="tag"/>
+    <!-- Left side column. contains the logo and sidebar -->
+    <span th:include="fragment/menu::menuPortion" th:remove="tag"/>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Page Header
+                <small>Optional description</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                <li class="active">Here</li>
+            </ol>
+        </section>
+        <section class="content container-fluid">
+            <!--------------------------
+              | Your Page Content Here |
+              -------------------------->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tr>
+                        <th>transtion id</th>
+                        <th>date</th>
+                        <th>amount</th>
+                        <th>Received By</th>
+                    </tr>
+                    <span th:each="pay: ${payDetails}" th:remove="tag">
+                         <tr>
+                             <td th:text="${pay.id}"></td>
+                             <td th:text="${pay.payDate}"></td>
+                             <td th:text="${pay.amount}"></td>
+                             <td th:text="${pay.receivedBy}"></td>
+                         </tr>
+                        </span>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</div>
+<span th:include="fragment/jsPortion::jsPortion" th:remove="tag"/>
+</body>
+</html>
