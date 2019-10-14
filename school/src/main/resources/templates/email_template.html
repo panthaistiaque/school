@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sending Email with Thymeleaf HTML Template Example</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!--<body class=" theme-blue">-->
+    <style type="text/css">
+        #line-chart {
+            height: 300px;
+            width: 800px;
+            margin: 0px auto;
+            margin-top: 1em;
+        }
+
+        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover {
+            color: #fff;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 48px;
+        }
+    </style>
+
+
+<body style="margin: 0; padding: 0;">
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+    <tr>
+        <td align="left" bgcolor="#6a7b9b" style="color: #fff; padding: 40px 0 30px 0;font-size: small">
+            <img src="cid:logo" alt="Aircraft" style="display: block;"/>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
+            <p>Dear <label style="font-size: 12px;padding-bottom: 1em;" th:text="${name}">Test</label>,</p>
+            <p>We accept your <label th:text="${type}"></label> request. please click this button and set your password
+            </p>
+            <p align="center">
+            <form th:action="@{${actionPath}}" method="POST">
+                <input name="t" type="hidden" th:value="${activationToken}"/>
+                <input name="i" type="hidden" th:value="${unserName}"/>
+                <input name="v" type="hidden" th:value="${activatiionTime}"/>
+                <button>Active</button>
+            </form>
+            </p>
+
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#eaeaea" style="padding: 30px 30px 30px 30px;">
+            <p>Thanks</p>
+            <p>System Admin,</p>
+            <p>ISP mangement System.</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

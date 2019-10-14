@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+        xmlns="http://www.w3.org/1999/xhtml">
+<span th:fragment="menuFile">
+    <div class="sidebar-nav">
+        <ul>
+
+            <span th:each="menuObj: ${menu}" th:remove="tag">
+                <span th:if="${#lists.size(menuObj.menuList) &gt; 0}" th:remove="tag">
+                    <li>
+                     <a href="#" th:attr="data-target='.'+${menuObj.id}+'_menu'" class="nav-header collapsed"
+                        data-toggle="collapse"><i
+                             th:class="${menuObj.icon}"></i> <span th:text="${menuObj.name}" th:remove="tag"/><i
+                             class="fa fa-collapse"></i></a>
+                        <!--</li>-->
+                        <!--<li>-->
+                        <ul th:class="${menuObj.id}+'_menu nav nav-list collapse'">
+                            <span th:each="submenu:${menuObj.menuList}" th:remove="tag">
+                                <li><a th:href="@{${submenu.url}}"><span th:class="${submenu.icon}"></span> <span
+                                        th:text="${submenu.name}" th:remove="tag"/></a></li>
+                            </span>
+                         </ul>
+                    </li>
+                </span>
+                <span th:if="${#lists.size(menuObj.menuList) eq 0}" th:remove="tag">
+                    <li>
+                                <a th:href="@{${menuObj.url}}" class="nav-header"><i
+                                        th:class="${menuObj.icon}"></i>
+                                    <span th:text="${menuObj.name}" th:remove="tag"/>
+                                </a>
+                    <li>
+                </span>
+            </span>
+
+
+
+            </ul>
+    </div>
+</span>

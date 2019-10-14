@@ -100,26 +100,34 @@
 
 <div class="dialog">
     <div class="panel panel-default">
-        <p class="panel-heading no-collapse">Sign In</p>
+        <p class="panel-heading no-collapse">Sign Up</p>
         <div class="panel-body">
-            <form  th:method="POST" th:action="@{/login}">
+            <form  th:method="POST" th:action="@{/newrequest}" th:object="${users}">
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text"  name="logInId" class="form-control span12">
+                    <label>First Name</label>
+                    <input type="text" th:name="firstName" class="form-control span12">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control span12 form-control">
+                    <label>Last Name</label>
+                    <input type="text" th:name="lastName" class="form-control span12">
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="text" th:name="email"  class="form-control span12">
+                </div>
+                <div class="form-group">
+                    <label>Date of Biarth</label>
+                    <input type="date" th:name="dob"  class="form-control span12">
                 </div>
                 <!--<a href="index.html" class="btn btn-primary pull-right">Sign In</a>-->
-                <button class="btn btn-primary pull-right" type="submit">Sign in</button>
+                <button class="btn btn-primary pull-right" type="submit">Sign Up</button>
 
                 <!--<label class="remember-me"><input type="checkbox"> Remember me</label>-->
                 <!--<div class="clearfix"></div>-->
             </form>
         </div>
     </div>
-    <p class="pull-right" style=""><a href="newAccount">Sing Up</a></p>
+    <p class="pull-right" style=""><a href="/">Sing in</a></p>
     <p><a href="reset-password.html">Forgot your password?</a></p>
 </div>
 

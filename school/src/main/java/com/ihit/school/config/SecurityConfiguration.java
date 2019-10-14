@@ -16,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private String[] ADMIN_URL = {"/h2-console/**"};
+    private String[] COMMON_URL = {"/home"};
+    private String[] ACCESS_ALL_URL = {"/login","/newAccount","/newrequest"};
     @Autowired
     AuthenticationProvider authenticationProvider;
 
@@ -26,22 +29,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .inMemoryAuthentication()
-//                .withUser("pantha").password(passwordEncoder().encode("1234")).roles("USER")
-//                .and().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
         auth.authenticationProvider(authenticationProvider);
     }
 
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().disable()
+        http//cors().and().csrf().and()
                 .authorizeRequests()
-                .antMatchers("/login","/h2").permitAll()
+                .antMatchers(ADMIN_URL).hasAuthority("ADMIN")
+                .antMatchers(COMMON_URL).hasAnyAuthority("USER","ADMIN","NOVICE")//hasAnyRole("USER","ADMIN","NOVICE")
+                .antMatchers(ACCESS_ALL_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("logInId").passwordParameter("password")
-                .successForwardUrl("/home")
-                ;
+                .defaultSuccessUrl("/home",true);
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Override
