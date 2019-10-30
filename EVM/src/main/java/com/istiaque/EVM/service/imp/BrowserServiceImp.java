@@ -94,6 +94,11 @@ public class BrowserServiceImp implements BrowserService {
         }
     }
 
+    @Override
+    public Browser findByRegistrationNo(String registrationNo) {
+        return browserRepository.findByRegistrationNo(registrationNo);
+    }
+
     private String getClientIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {

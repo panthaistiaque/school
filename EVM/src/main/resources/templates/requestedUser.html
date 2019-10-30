@@ -428,7 +428,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table id="example2" class="table no-margin">
+                    <table id="example2" class="table table-responsive no-margin">
                         <thead>
                         <tr>
                             <th>Request ID</th>
@@ -471,57 +471,86 @@
                     <!--<p id="modal-value"></p>-->
                     <div class="modal-dialog ">
                         <div class="panel panel-success">
-                            <div class="panel-heading">Log Details</div>
+                            <div class="panel-heading">Log Details
+                            <span class="label label-lg label-warning pull-right">PANDING</span>
+                            </div>
                             <div class="panel-body">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-                                    <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-                                    <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-                                    <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+                                    <li class="active"><a data-toggle="tab" href="#home">Details</a></li>
+                                    <li><a data-toggle="tab" href="#menu1">PC Info</a></li>
+                                    <li><a data-toggle="tab" href="#menu2">Comment</a></li>
                                 </ul>
 
                                 <div class="tab-content">
                                     <div id="home" class="tab-pane fade in active">
                                         <h3>Personal</h3>
                                         <p>
-                                        <table>
+                                        <table class="table">
                                             <tr>
                                                 <td>Request ID</td>
-                                                <td><input id="personalUserRequestId"/></td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="personalUserRequestId"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Name</td>
-                                                <td><input id="personalUserRequestName"/></td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="personalUserRequestName"/></td>
                                             </tr>
                                             <tr>
                                                 <td>E-mail</td>
-                                                <td><input id="personalUserRequestEmail"/></td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="personalUserRequestEmail"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Date of birth</td>
-                                                <td><input id="personalUserRequestdob"/></td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="personalUserRequestdob"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Phone</td>
-                                                <td><input id="personalUserRequestPhone"/></td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="personalUserRequestPhone"/></td>
                                             </tr>
                                         </table>
                                         </p>
                                     </div>
                                     <div id="menu1" class="tab-pane fade">
-                                        <h3>Menu 1</h3>
-                                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                            aliquip ex ea commodo consequat.</p>
+                                        <h3>Browser Info</h3>
+                                        <p>
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <td>Browser Registration No</td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="browserrid"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Browser Name</td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="browserName"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>OS Name</td>
+                                                <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                           id="clientOsName"/></td>
+                                            </tr>
+                                        <tr>
+                                            <td>Client IP</td>
+                                            <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                       id="browserclientIp"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>User Agent</td>
+                                            <td><input readonly style="width: 100%;padding: 5px 20px;"
+                                                       id="browserUserAgent"/></td>
+                                        </tr>
+                                        </table>
+                                        </p>
                                     </div>
                                     <div id="menu2" class="tab-pane fade">
-                                        <h3>Menu 2</h3>
-                                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                            doloremque laudantium, totam rem aperiam.</p>
-                                    </div>
-                                    <div id="menu3" class="tab-pane fade">
-                                        <h3>Menu 3</h3>
-                                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                                            dicta sunt explicabo.</p>
+                                        <h3>Admin Comment</h3>
+                                        <p id="adminCommitForRejection">
+                                            <txtare></txtare>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="pull-right">
@@ -763,7 +792,6 @@
         $('.sidebar-menu').tree();
         $('.reqid').on('click', function (e) {
             var recipient = $(this).attr('data');
-            alert(recipient);
             $.get('getOneNewRequestUser/' + recipient,  // url
                     function (data, textStatus, jqXHR) {  // success callback
                         $("#personalUserRequestId").val(data.requestId);
@@ -771,12 +799,25 @@
                         $("#personalUserRequestEmail").val(data.email);
                         $("#personalUserRequestPhone").val(data.phone);
                         $("#personalUserRequestdob").val(data.dob);
+                        console.log(data.status);
+                        ajaxCall2(data.bid);
                         $('#reqDetails').modal('show');
                     });
 
 
         });
-
+        function ajaxCall2(id) {
+            $.get('getBrowserForUser/' + id,
+                    function (data, textStatus, jqXHR) {
+                        console.log("bid :" + data.registrationNo);
+                        $("#browserrid").val((data.registrationNo).substring(0, 26)+'...');
+                        $("#browserName").val(data.clientBrowser);
+                        $("#clientOsName").val(data.clientOS);
+                        $("#browserclientIp").val(data.clientIpAddress);
+                        $("#browserUserAgent").val(data.userAgent);
+                    }
+            )
+        };
 
     })
 </script>

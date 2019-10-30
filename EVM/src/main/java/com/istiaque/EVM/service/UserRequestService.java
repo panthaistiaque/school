@@ -1,5 +1,6 @@
 package com.istiaque.EVM.service;
 
+import com.istiaque.EVM.model.RequestRejectionMesg;
 import com.istiaque.EVM.model.UserRequest;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface UserRequestService {
     UserRequest saveUserRequest(UserRequest userRequest);
     List findAllUnaproveUser();
     UserRequest findById(Integer id);
+    RequestRejectionMesg getRejectionMessage(Integer id);
 }

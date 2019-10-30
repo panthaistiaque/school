@@ -1,6 +1,8 @@
 package com.istiaque.EVM.controllar;
 
+import com.istiaque.EVM.model.Browser;
 import com.istiaque.EVM.model.UserRequest;
+import com.istiaque.EVM.service.BrowserService;
 import com.istiaque.EVM.service.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,17 +20,26 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserRequestService userRequestService;
-
+    @Autowired
+    BrowserService browserService;
     @GetMapping("/allNewUserRequest")
     public ModelAndView allNewUserRequest(ModelAndView modelAndView) {
         List list = userRequestService.findAllUnaproveUser();
-        modelAndView.addObject("requestedUserList",list);
+        modelAndView.addObject("requestedUserList", list);
         modelAndView.setViewName("requestedUser");
         return modelAndView;
     }
+
     @ResponseBody
     @GetMapping("/getOneNewRequestUser/{id}")
-    public UserRequest getOneRequest(@PathVariable Integer id){
+    public UserRequest getOneRequest(@PathVariable Integer id) {
         return userRequestService.findById(id);
+    }
+
+    @ResponseBody
+    @GetMapping("/getBrowserForUser/{bid}")
+    public Browser getBrowserForUser(@PathVariable String bid) {
+        System.out.println(bid);
+        return browserService.findByRegistrationNo(bid);
     }
 }

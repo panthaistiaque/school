@@ -18,4 +18,5 @@ public interface BrowserService {
    String cookieValue(HttpServletRequest request, String name);
 
     Browser saveBrowserUserName(HttpServletRequest request, String userName);
+    Browser findByRegistrationNo(String registrationNo);
 }
