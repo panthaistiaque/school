@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="hvalidww.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,7 +25,15 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .errorClass {
+            border-color: #ff19b8;
+            border-width: 3px;
+            border-style: solid;
+        }
+    </style>
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -36,17 +44,17 @@
     <div class="register-box-body">
         <p class="login-box-msg">Register a new membership</p>
 
-        <form th:method="POST" th:action="@{/singup}" th:object="${user}">
+        <form th:method="POST" th:action="@{/singup}" th:object="${user}" th:name="singup" onSubmit="return validateForm()">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" th:name="fullName" placeholder="Full name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" th:name="email" placeholder="Email">
+                <input type="email" class="form-control" id="email" th:name="email" placeholder="Email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" th:name="phone" placeholder="Mobile No.">
+                <input type="text" class="form-control" id="phone" th:name="phone" placeholder="Mobile No.">
                 <span class="glyphicon glyphicon-phone form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
@@ -90,11 +98,72 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' /* optional */
         });
+        $('#phone').focusout(function () {
+            var phoneno = /^\+?([0])\)?[]?([1])\)?[]?([0-9]{9})$/;
+            var phone = $(this).val();
+            if (phone.match(phoneno)) {
+                $(this).removeClass('errorClass');
+            } else {
+                $(this).addClass('errorClass');
+            }
+        });
+        $("#email").focusout(function () {
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            var mail = $(this).val();
+            if (mail.match(mailformat)) {
+                $(this).removeClass('errorClass')
+                $.ajax({
+                    url: "v1/isMailUsed",
+                    type: "POST",
+                    data: {"_csrf": $("input[name=_csrf]").val(), email: mail},
+                    success: function (response) {
+                        debugger;
+//                        console.log(response);
+                        if (response) {
+                            $('#email').addClass('errorClass');
+                        } else {
+                            $('#email').removeClass('errorClass');
+                        }
+                    }
+                });
+            } else {
+//                $('.error-email').html("<font color='red'>Please Enter a valid email!</font>");
+                $(this).addClass('errorClass');
+            }
+        });
     });
     //Date picker
     $('#dob').datepicker({
         autoclose: true
     })
+    function validateForm() {
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var phoneno = /^\+?([0])\)?[]?([1])\)?[]?([0-9]{9})$/;
+        if(document.singup.fullName.value==""){
+            alert('Full Name can not be null!!');
+            return false;
+        }
+        if(document.singup.email.value==""){
+            alert('Email can not be null!!');
+            return false;
+        }
+        if(document.singup.phone.value==""){
+            alert('Phone can not be null!!');
+            return false;
+        }
+        if(document.singup.dob.value==""){
+            alert('Date of Birth not be null!!');
+            return false;
+        }
+        if(!document.singup.email.value.match(mailformat)){
+            alert('Please give a valid mail address !!');
+            return false;
+        }
+        if(!document.singup.phone.value.match(phoneno)){
+            alert('Please give a valid Phone no !!');
+            return false;
+        }
+    }
 </script>
 </body>
 </html>

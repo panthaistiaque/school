@@ -12,5 +12,7 @@ public interface UserRequestService {
     UserRequest saveUserRequest(UserRequest userRequest);
     List findAllUnaproveUser();
     UserRequest findById(Integer id);
-    RequestRejectionMesg getRejectionMessage(Integer id);
+    RequestRejectionMesg getRejectionMessage(Long id);
+    String userRequestApproved(UserRequest UserRequest);
+    boolean isUserExist(String email);
 }

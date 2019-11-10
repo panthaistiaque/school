@@ -25,4 +25,8 @@ public class UserRequest {
     private String bid;
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Column(columnDefinition = "DATE default '2001-01-01'")
+    private String requstDate;
+    @Column(columnDefinition = "DATE")
+    private String actionDate;
 }

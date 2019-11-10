@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final String[] UNAUTHENTICATED_URL = {"/login", "/singup", "/h2-console/**"};
+    private final String[] UNAUTHENTICATED_URL = {"/login", "/singup", "/setpassword", "/v1/**","/savePassword"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {

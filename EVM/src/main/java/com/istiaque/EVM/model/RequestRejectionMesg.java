@@ -14,6 +14,7 @@ public class RequestRejectionMesg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer requestId;
     private String comment;
+    @Column(name = "request_Id")
+    private Long requestId;
 }

@@ -23,9 +23,10 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -36,7 +37,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form  th:method="POST" th:action="@{/login}">
+        <form th:method="POST" th:action="@{/login}">
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="Email" name="username" id="username">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -78,6 +79,7 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     $(function () {
         $('input').iCheck({
@@ -85,7 +87,28 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' /* optional */
         });
+        /*<![CDATA[*/
+//        var user = /*[[${error}]]*/"";
+//        toastr.options.positionClass = 'toast-top-center';
+//        toastr.error(user);
+        /*]]>*/
     });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        /*<![CDATA[*/
+        var user = /*[[${error}]]*/;
+        if (user != null && user.length > 5) {
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.warning(user);
+        }
+        var message = /*[[${message}]]*/;
+        if (message != null && message.length > 5) {
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.success(message);
+        }
+    });
+    /*]]>*/
 </script>
 </body>
 </html>
