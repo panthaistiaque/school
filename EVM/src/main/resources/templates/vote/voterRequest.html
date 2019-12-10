@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>||Profile||</title>
+    <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <span th:include="fragment/nevigation::nivbarPortion" th:remove="tag"/>
+    <!-- Left side column. contains the logo and sidebar -->
+    <span th:include="fragment/menu::menuPortion" th:remove="tag"/>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Voter Request
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/"><i class="fa fa-link"></i> Voter</a></li>
+                <li class="active">Voter Request</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+                <div class="box-body">
+                    <div class="col-md-12 responsive">
+                        <div class="col-md-6">
+                            <h4>Enlisted voter list</h4>
+                            <table class="table table-bordered">
+                                <tr class="info">
+                                    <td>Voter SL.</td>
+                                    <td>Election</td>
+                                    <td>Association</td>
+                                </tr>
+                                <tr th:each="electionList :${list}">
+                                    <td ><a href="#"><span th:text="${electionList.voterNo}"></span></a></td>
+                                    <td th:text="${electionList.election.electionName}">Association</td>
+                                    <td th:text="${electionList.election.association.associationName}">Validity</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Enter your Election Code</h4>
+                            <form th:action="@{/voterrequest}" th:method="POST">
+                                <input class="form-control" name="electionCode" required  maxlength="6" minlength="6"/>
+                                <input type="submit">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--===================================-->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.18
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+        reserved.
+    </footer>
+    <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="bower_components/select2/dist/js/select2.full.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+</body>
+</html>

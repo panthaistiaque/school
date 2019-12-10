@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>||System Log||</title>
+    <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <span th:include="fragment/nevigation::nivbarPortion" th:remove="tag"/>
+    <!-- Left side column. contains the logo and sidebar -->
+    <span th:include="fragment/menu::menuPortion" th:remove="tag"/>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>404 Error Page</h1>
+                    </div>
+                    <!--<div class="col-sm-6">-->
+                        <!--<ol class="breadcrumb float-sm-right">-->
+                            <!--<li class="breadcrumb-item"><a href="#">Home</a></li>-->
+                            <!--<li class="breadcrumb-item active">404 Error Page</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-warning"> 404</h2>
+
+                <div class="error-content">
+                    <h3><i class="fa fa-exclamation-triangle text-warning"></i> Oops! Page not found.</h3>
+
+                    <p>
+                        We could not find the page you were looking for.
+                        Meanwhile, you may <a href="/">return to dashboard</a> or try using the search form.
+                    </p>
+
+                    <form class="search-form">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search">
+
+                            <div class="input-group-append">
+                                <button type="submit" name="submit" class="btn btn-warning"><i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.input-group -->
+                    </form>
+                </div>
+                <!-- /.error-content -->
+            </div>
+            <!-- /.error-page -->
+        </section>
+    </div>
+
+    <!--===================================-->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.18
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+
+</body>
+</html>

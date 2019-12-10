@@ -37,7 +37,7 @@ public class EmailUtil {
             "\t\t\t\t\t\t\t\t\t\t<div style=\"font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:14px;color:rgba(0,0,0,0.87);line-height:20px;padding-top:20px;text-align:center\">\n" +
             "\t\t\t\t\t\t\t\t\t\t\tYour Account was created successfully. Before use your account please set password by clicking this button. \n" +
             "\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding-top:32px;text-align:center\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"http://localhost:8080/setpassword?tk=ENCRYPTED_TOKEN\" style=\"font-family:'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;line-height:16px;color:#ffffff;font-weight:400;text-decoration:none;font-size:14px;display:inline-block;padding:10px 24px;background-color:#E2136E;border-radius:5px;min-width:90px\" target=\"_blank\" >Set Password</a>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"ENCRYPTED_TOKEN\" style=\"font-family:'Google Sans',Roboto,RobotoDraft,Helvetica,Arial,sans-serif;line-height:16px;color:#ffffff;font-weight:400;text-decoration:none;font-size:14px;display:inline-block;padding:10px 24px;background-color:#E2136E;border-radius:5px;min-width:90px\" target=\"_blank\" >Set Password</a>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
             "\t\t\t\t\t\t\t\t\t\t</div>\n" +
             "\t\t\t\t\t\t\t\t\t</div>\n" +
@@ -64,7 +64,9 @@ public class EmailUtil {
     public void manageMail(String type, String toAddress, String tokenValue) {
         switch (type) {
             case "UserApprove":
-                String s = tokenValue + "&v=" + String.valueOf(System.currentTimeMillis());
+                String s = "http://localhost:8080/setpassword?tk="+tokenValue + "&v=" + String.valueOf(System.currentTimeMillis());
+                System.out.println(s);
+                log.info(s);
                 sendEmail(approvalMessage.replace("ENCRYPTED_TOKEN", s), "Request Accepted", toAddress);
         }
     }

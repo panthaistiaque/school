@@ -1,6 +1,7 @@
 package com.istiaque.EVM.service.imp;
 
 import com.istiaque.EVM.model.RequestRejectionMesg;
+import com.istiaque.EVM.model.RoleModel;
 import com.istiaque.EVM.model.User;
 import com.istiaque.EVM.model.UserRequest;
 import com.istiaque.EVM.model.enam.Status;
@@ -13,6 +14,7 @@ import com.istiaque.EVM.util.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,12 +70,18 @@ public class UserRequestServiceImp implements UserRequestService {
             return "User Request Rejected due to duplicate Email ID";
         } else {
             User user = new User();
+            List list = new ArrayList<RoleModel>();
+            RoleModel roleModel = new RoleModel();
+            roleModel.setRoleId(1);
+            roleModel.setRoleName("USER");
+            list.add(roleModel);
             user.setUserName(userRequest.getEmail());
             user.setFullName(userRequest.getFullName());
             user.setPhone(userRequest.getPhone());
             user.setDob(userRequest.getDob());
             user.setToken(UUID.randomUUID().toString());
             user.setCreationDate(DateUtil.currentDate());
+            user.setRoleList(list);
             userRepository.save(user);
             emailUtil.manageMail("UserApprove", userRequest.getEmail(), user.getToken());
             userRequest.setActionDate(DateUtil.currentDate());

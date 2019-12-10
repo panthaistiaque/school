@@ -8,4 +8,5 @@ import com.istiaque.EVM.model.User;
 public interface UserService {
     User findByToken(String token);
     User passwordUpdate(String userName, String password);
+    User getUserByUserName(String userName);
 }

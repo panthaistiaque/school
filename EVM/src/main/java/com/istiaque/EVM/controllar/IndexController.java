@@ -3,6 +3,7 @@ package com.istiaque.EVM.controllar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.istiaque.EVM.model.LogModel;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,8 @@ import java.util.List;
  */
 @Controller
 public class IndexController {
+    @Value("${application.log.path}")
+    String logPath  ;
     List<LogModel> logModelList;
 
     @GetMapping("/")
@@ -37,7 +40,7 @@ public class IndexController {
         logModelList = new ArrayList<>();
         int i = 1;
         StringBuilder sb = new StringBuilder();
-        String logPath = "C:/log/log.log";
+
         File logFile = new File(logPath);
         List<String> logLines;
         JsonObject jsonObject = null;

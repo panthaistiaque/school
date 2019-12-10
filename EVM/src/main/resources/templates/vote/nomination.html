@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>||Profile||</title>
+    <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <span th:include="fragment/nevigation::nivbarPortion" th:remove="tag"/>
+    <!-- Left side column. contains the logo and sidebar -->
+    <span th:include="fragment/menu::menuPortion" th:remove="tag"/>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <section class="content-wrapper">
+        <section class="content-header">
+        <h1>nomination Paper</h1>
+        </section>
+
+        <!--===================================-->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.4.18
+            </div>
+            <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+            reserved.
+        </footer>
+        <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
+    </div>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="bower_components/select2/dist/js/select2.full.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+</body>
+</html>
