@@ -3,6 +3,21 @@
 <head>
     <title>||Profile||</title>
     <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+    <style>
+        .copied {
+            position: absolute;
+            background: #1266ae;
+            color: #fff;
+            font-weight: bold;
+            z-index: 99;
+            width: 100%;
+            top: 0;
+            text-align: center;
+            padding: 15px;
+            display: none;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -35,6 +50,7 @@
                     <div class="col-md-12 responsive">
                         <div class="col-md-6">
                             <h4>Enlisted voter list</h4>
+                            <input id="hidden_value" type="hidden"/>
                             <table class="table table-bordered">
                                 <tr class="info">
                                     <td>Voter SL.</td>
@@ -42,7 +58,7 @@
                                     <td>Association</td>
                                 </tr>
                                 <tr th:each="electionList :${list}">
-                                    <td ><a href="#"><span th:text="${electionList.voterNo}"></span></a></td>
+                                    <td ><a href="#"><span class="copy-to-clipboard" th:text="${electionList.voterNo}"></span></a><div class='copied'></div></td>
                                     <td th:text="${electionList.election.electionName}">Association</td>
                                     <td th:text="${electionList.election.association.associationName}">Validity</td>
                                 </tr>
@@ -89,9 +105,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.full.js"></script>
 <script>
-    $(document).ready(function () {
 
-    });
+$('.copy-to-clipboard').click(function (e) {
+    copyTextToClipboardJavascript(e.target);
+});
+function copyTextToClipboardJavascript(dom) {
+    var copyText = dom.innerHTML.trim();
+    var textArea = document.createElement("textarea");
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = 0;
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.value = copyText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    var successful;
+    try {
+        successful = document.execCommand('copy');
+    } catch (err) {
+        successful = false;
+    }
+    document.body.removeChild(textArea);
+
+    if (successful) {
+        $(".copied").text("Copied to clipboard").show().fadeOut(1200);
+    }
+}
 </script>
 </body>
 </html>

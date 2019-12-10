@@ -3,6 +3,7 @@ package com.istiaque.EVM.controllar;
 import com.istiaque.EVM.model.Profile;
 import com.istiaque.EVM.model.User;
 import com.istiaque.EVM.model.VoterList;
+import com.istiaque.EVM.service.ElectionService;
 import com.istiaque.EVM.service.VoterListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpSession;
 public class VoteController {
     @Autowired
     VoterListService voterListService;
+    @Autowired
+    ElectionService electionService;
 
     @GetMapping("voterrequest")
     public ModelAndView index(ModelAndView modelAndView, @AuthenticationPrincipal User user) {
@@ -38,7 +41,8 @@ public class VoteController {
         return modelAndView;
     }
     @GetMapping("/nomination")
-    public ModelAndView nominationPaper(ModelAndView modelAndView){
+    public ModelAndView nominationPaper(ModelAndView modelAndView,@AuthenticationPrincipal User user){
+        modelAndView.addObject("list", voterListService.findAllByUserId(user.getId()));
         modelAndView.setViewName("vote/nomination");
         return modelAndView;
     }

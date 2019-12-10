@@ -30,4 +30,6 @@ public class Election {
     private Association association;
     @Enumerated(EnumType.ORDINAL)
     private Status status;
+    @Embedded
+    private ElectionSchedule electionSchedule;
 }
