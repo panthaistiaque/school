@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface VoterListRepository extends JpaRepository<VoterList, Integer> {
     List<VoterList> findAllByUserId(Integer userId);
+
+    VoterList findByVoterNo(Long voterNo);
 }

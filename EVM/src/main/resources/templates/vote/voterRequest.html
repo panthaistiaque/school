@@ -88,19 +88,7 @@
     <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
 </div>
 
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<span th:include="fragment/jsRef::jsRefPortion" th:remove="tag"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.full.js"></script>
@@ -137,6 +125,15 @@ function copyTextToClipboardJavascript(dom) {
         $(".copied").text("Copied to clipboard").show().fadeOut(1200);
     }
 }
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        var message = /*[[${message}]]*/;
+        if (message != null && message.length > 5) {
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.success(message);
+        }
+    })
 </script>
 </body>
 </html>

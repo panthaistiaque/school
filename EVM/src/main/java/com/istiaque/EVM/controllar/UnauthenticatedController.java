@@ -67,7 +67,7 @@ public class UnauthenticatedController {
         userRequestService.saveUserRequest(user);
         browserService.saveBrowserUserName(request, user.getEmail());
         log.info("new user request receive from : " + user.getEmail());
-        redirect.addAttribute("mess","After approve your request , you will get a mail.");
+        redirect.addFlashAttribute("mess","After approve your request , you will get a mail.");
         modelAndView.setViewName("redirect:/login");
         return modelAndView;
     }

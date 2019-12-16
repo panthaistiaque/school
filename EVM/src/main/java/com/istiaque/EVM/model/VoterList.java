@@ -1,5 +1,6 @@
 package com.istiaque.EVM.model;
 
+import com.istiaque.EVM.model.enam.Status;
 import lombok.Data;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -26,4 +27,8 @@ public class VoterList {
     private Integer userId;
     @Column(columnDefinition = "DATETIME")
     private String createOn;
+    @Enumerated(EnumType.STRING)
+    private Status isCandidate = Status.valueOf("NO");
+    @Enumerated(EnumType.STRING)
+    private Status isSupporter = Status.valueOf("NO");
 }

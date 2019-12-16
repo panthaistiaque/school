@@ -7,6 +7,8 @@ import com.istiaque.EVM.model.enam.Status;
 import com.istiaque.EVM.repository.AssociationRepository;
 import com.istiaque.EVM.repository.ElectionRepository;
 import com.istiaque.EVM.service.ElectionService;
+import com.istiaque.EVM.service.NotificationService;
+import com.istiaque.EVM.util.ConstantUtil;
 import com.istiaque.EVM.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,8 @@ public class ElectionServiceImp implements ElectionService {
     AssociationRepository associationRepository;
     @Autowired
     ElectionRepository electionRepository;
-
+    @Autowired
+    NotificationService notificationService;
     @Override
     public Association saveAssociation(Association association) {
         log.info("New Association save for : " + association.getAssociationName() + " by user id :" + association.getCreatedBy());
@@ -70,6 +73,7 @@ public class ElectionServiceImp implements ElectionService {
         election.setElectionSchedule(electionSchedule);
         log.info("New Election save for : " + election.getElectionCode() + " by user id :" + election.getCreatedBy());
         election = electionRepository.save(election);
+        notificationService.save(ConstantUtil.ELECTION_CREATE_NOTIFICATION,election.getCreatedBy(),new String[]{election.getElectionName(),election.getAssociation().getAssociationName(),election.getValidDate()});
         } catch (ParseException e) {
             e.printStackTrace();
         }

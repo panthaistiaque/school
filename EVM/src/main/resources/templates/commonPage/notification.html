@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>||Profile||</title>
+    <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+    <style>
+        label.file {
+            border-radius: 20px;
+            border: none;
+            padding: 5px 18px;
+            margin: 0 auto 20px;
+            color: #888;
+            background: #fff;
+            width: calc(95% - 6px);
+            font-family: Open Sans;
+            width: 95%;
+            margin: 5px auto;
+            text-align: left;
+            display: block;
+            border: solid 1px grey;
+        }
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+    <span th:include="fragment/nevigation::nivbarPortion" th:remove="tag"/>
+    <!-- Left side column. contains the logo and sidebar -->
+    <span th:include="fragment/menu::menuPortion" th:remove="tag"/>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="panel-group" id="accordion">
+                <span th:each="noticeList :${notice}" th:remove="tag">
+                    <div class="panel panel-info">
+                          <div class="panel-heading">
+                                <a class="notificationDetailsPanal" data-toggle="collapse" data-parent="#accordion"
+                                   th:href="${'#'+noticeList.id}">
+                                       <div class="panel-title">
+                                               <span th:text="${noticeList.messageSummary}"></span>
+                                           <!--<div class="sm-col-5" th:text="${electionList.election.association.associationName}"></div>-->
+                                               <div class="box-tools pull-right">
+                                                      <i class="fa fa-clock-o"> &nbsp;</i>
+                                                      <span th:text="${#strings.substring(noticeList.creationDate,0,16)}"></span>
+                                               </div>
+                                       </div>
+                                </a>
+                          </div>
+                          <div th:id="${''+noticeList.id}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                      <span th:text="${noticeList.message}"></span>
+                                </div>
+                          </div>
+                    </div>
+                </span>
+                <hr/>
+                <span th:each="readNoticeList :${readNotice}" th:remove="tag">
+                        <div class="panel panel-warn">
+                              <div class="panel-heading">
+                                    <a data-toggle="collapse" data-parent="#accordion" th:href="${'#'+readNoticeList.id}">
+                                           <div class="panel-title">
+                                                   <span th:text="${readNoticeList.messageSummary}"></span>
+                                                <div class="box-tools pull-right">
+                                                         <em> <i class="fa fa-clock-o"> &nbsp;</i>
+                                                          <span th:text="${#strings.substring(readNoticeList.creationDate,0,16)}"></span></em>
+                                                   </div>
+                                           </div>
+                                    </a>
+                              </div>
+                              <div th:id="${readNoticeList.id}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                          <span th:text="${readNoticeList.message}"></span>
+                                        <div class="pull-right">
+                                                          <em><span class="font-italic"
+                                                                    th:text="${'seen at: '+#strings.substring(readNoticeList.clickDate,0,16)}"></span></em>
+                                        </div>
+                                    </div>
+                              </div>
+                        </div>
+                </span>
+            </div>
+        </section>
+    </div>
+
+    <!--===================================-->
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.4.18
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<span th:include="fragment/jsRef::jsRefPortion" th:remove="tag"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.notificationDetailsPanal').on('click', function (e) {
+            var l = $(this).attr("href").replace('#', '');
+
+            $.ajax({
+                type: 'POST',
+                url: '/notification_seen',
+                data: {"noti_i": l, "_csrf": $("input[name=_csrf]").val()},
+                async: false
+            });
+        });
+    });
+</script>
+</body>
+</html>

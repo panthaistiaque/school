@@ -3,6 +3,11 @@
 <head>
     <title>||Profile||</title>
     <span th:include="fragment/header::headerPortion" th:remove="tag"/>
+    <style>
+        .table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td {
+            padding: 1px;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -31,29 +36,97 @@
             <div class="box">
                 <div class="box-body">
                     <div class="col-md-12 responsive">
-                        <!--<div class="col-md-">-->
-                        <h4>Enlisted voter list</h4>
+                        <h4>Eligible Election Schedule</h4>
                         <input id="hidden_value" type="hidden"/>
-                        <table class="table table-bordered">
-                            <tr class="info">
-                                <td>Voter SL.</td>
-                                <td>Election</td>
-                                <td>Association</td>
-                            </tr>
-                            <tr th:each="electionList :${list}">
-                                <td><span th:text="${electionList.voterNo}"></span></td>
-                                <td th:text="${electionList.election.electionName}"></td>
-                                <td th:text="${electionList.election.association.associationName}"></td>
-                            </tr>
-                        </table>
-                        <!--</div> -->
+                        <div class="panel-group" id="accordion">
+                            <span th:each="electionList :${list}" th:remove="tag">
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               th:href="${'#'+electionList.voterNo}">
+                                                <div class="panel-title">
+                                                            <span th:text="${electionList.election.electionName+' FOR '+electionList.election.association.associationName}"></span>
+                                                    <!--<div class="sm-col-5" th:text="${electionList.election.association.associationName}"></div>-->
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div th:id="${electionList.voterNo}" class="panel-collapse collapse">
+                                            <div class="panel-body ">
+                                                <div class="responsive">
+                                                <table class="table table-bordered table-condensed">
+                                                    <tr class="info">
+                                                        <th>Election Name</th>
+                                                        <th th:text="${electionList.election.electionName}"></th>
+                                                        <th>Association Name</th>
+                                                        <th th:text="${electionList.election.association.associationName}"></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><label>Nomination Start</label></td>
+                                                        <td th:text="${electionList.election.electionSchedule.nominationStartDate}"></td>
+                                                        <td><label>Nomination Start</label></td>
+                                                        <td th:text="${electionList.election.electionSchedule.nominationCloseDate}"></td>
+                                                    </tr>
+                                                    <tr class="info">
+                                                        <td><label>Election Date</label></td>
+                                                        <td th:text="${electionList.election.electionSchedule.electionDate}"></td>
+                                                        <td><label>Result Published</label></td>
+                                                        <td th:text="${electionList.election.electionSchedule.resultPublishDate}"></td>
+                                                    </tr>
+                                                    <tfoot>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <span th:switch="${electionList.isCandidate.toString()}"
+                                                              th:remove="tag">
+                                                        <button th:case="'NO'" th:data="${electionList.voterNo}"
+                                                                class="btn btn-info btnNomination">Nomination Paper</button>
+                                                            <button th:case="'YES'"
+                                                                    class="btn btn-default">Already submitted</button>
+                                                        </span>
+                                                    </td>
+                                                    </tfoot>
+                                                </table>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
     </div>
+    <div class="modal  fade" tabindex="-1" role="dialog" aria-hidden="true" id="errorDetails">
+        <div class="modal-dialog modal-md">
+            <div class="panel panel-success">
+                <div class="panel-heading">Nomination Submit</div>
+                <div class="panel-body">
+                    <form th:action="@{/save_nomination}" th:method="post">
+                        <table class="table table-condensed table-responsive">
+                            <tr>
+                                <td><label class="form-Label">Candidate Voter No:</label></td>
+                                <td><input name="candidateVoterNo" required id="candidateVoterNo" readonly
+                                           class="form-control"/></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-Label">Supporter Voter No:</label></td>
+                                <td><input name="supporterVoterNo" required id="supporterVoterNo" class="form-control"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-default">ok</button>
+                        </div>
+                    </form>
 
+                </div>
+            </div>
+        </div>
+    </div>
     <!--===================================-->
     <footer class=" main-footer
                                 ">
@@ -67,27 +140,28 @@
     <span th:include="fragment/configuration::configPortion" th:remove="tag"/>
 </div>
 
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<span th:include="fragment/jsRef::jsRefPortion" th:remove="tag"/>
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.full.js"></script>
 <script>
     $(document).ready(function () {
-
+        $('.btnNomination').on('click', function (e) {
+            var recipient = $(this).attr('data');
+            $('#candidateVoterNo').val(recipient);
+            $('#errorDetails').modal({backdrop: 'static', keyboard: false});
+        });
     });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        var message = /*[[${message}]]*/;
+        if (message != null && message.length > 5) {
+            toastr.options.positionClass = 'toast-top-center';
+            toastr.success(message);
+        }
+    })
 </script>
 </body>
 </html>

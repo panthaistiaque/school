@@ -18,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final String[] UNAUTHENTICATED_URL = {"/login", "/singup", "/setpassword", "/v1/**", "/savePassword"};
     private final String[] ADMIN_URL = {"/syslog/**", "/allNewUserRequest", "/getOneNewRequestUser/**", "/getBrowserForUser/**", "/userRequestAccept","/newelection"};
-    private final String[] USER_URL = {"/","/profile","/voterrequest"};
+    private final String[] USER_URL = {"/","/profile","/voterrequest","/notifi","/all_notification"};
+    private final String[] COMMON_URL = {"/notifi","/all_notification"};
+
     @Autowired
     AuthenticationProvider authenticationProvider;
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns="http://www.w3.org/1999/xhtml">
+
+<span th:fragment="jsRefPortion">
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+    <!-- Sparkline -->
+<script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- jvectormap  -->
+<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- SlimScroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- ChartJS -->
+<script src="bower_components/chart.js/Chart.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard2.js"></script>
+    <!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<script>
+    $.ajax({
+        url: "/notifi",
+        type: "GET",
+        success: function (response) {
+            $('#notificationCount').html(response.length);
+            if(response.length>0){
+                $("#notificationNo").html(response.length);
+                for (i = 0; i < response.length; i++) {
+                    $("#notificationSection").append('<li> <a href="/all_notification"><i class="fa fa-users text-aqua"></i>'+response[i].messageSummary+'</a></li>');
+                }
+            }
+        }
+    });
+</script>
+</span>
