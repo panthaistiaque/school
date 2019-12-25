@@ -4,6 +4,7 @@ import com.istiaque.EVM.model.enam.Status;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by User on 12/11/2019.
@@ -11,11 +12,11 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "tbl_candidate")
-public class Candidate {
+public class Candidate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer candidateId;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "voterNo")
     private VoterList voterList;
     private String name;

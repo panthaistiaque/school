@@ -10,4 +10,5 @@ import java.util.List;
 public interface VoterListService {
     void save(String code, Integer userId);
     List<VoterList> findAllByUserId(Integer userId);
+    List<VoterList> nominationAbleElectionList(Integer userId);
 }

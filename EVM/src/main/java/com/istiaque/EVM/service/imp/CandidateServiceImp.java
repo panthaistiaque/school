@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by User on 12/12/2019.
@@ -75,5 +76,15 @@ public class CandidateServiceImp implements CandidateService {
             }
         }//one need in this position
         return null;
+    }
+
+    @Override
+    public Candidate findByElectionElectionIdAndVoterListVoterNo(Integer electionId, Long voterNo) {
+        return candidateRepository.findByElectionElectionIdAndSupporterIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(electionId,voterNo, DateUtil.currentDate());
+    }
+
+    @Override
+    public List getAllCandidate(Integer electionId) {
+        return candidateRepository.findAllByElectionElectionIdAndStatusAndElectionValidDateGreaterThanEqual(electionId,Status.APPROVED,DateUtil.currentDate());
     }
 }

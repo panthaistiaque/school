@@ -57,4 +57,9 @@ public class VoterListServiceImp implements VoterListService {
     public List<VoterList> findAllByUserId(Integer userId) {
         return  voterListRepository.findAllByUserId(userId);
     }
+
+    @Override
+    public List<VoterList> nominationAbleElectionList(Integer userId) {
+        return voterListRepository.findAllByUserIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(userId,DateUtil.currentDate());
+    }
 }

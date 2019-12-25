@@ -2,10 +2,12 @@ package com.istiaque.EVM.model;
 
 import com.istiaque.EVM.model.enam.Status;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Created by User on 12/8/2019.
@@ -13,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @Table(name = "tbl_voter_list")
-public class VoterList {
+public class VoterList implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

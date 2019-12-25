@@ -7,6 +7,11 @@
         .table-condensed > thead > tr > th, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > tbody > tr > td, .table-condensed > tfoot > tr > td {
             padding: 1px;
         }
+
+        .approved {
+            background-image: url('dist/img/approved_stamp.jpg');
+            background-repeat: no-repeat;
+        }
     </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -78,13 +83,21 @@
                                                     <td></td>
                                                     <td></td>
                                                     <td>
-                                                        <span th:switch="${electionList.isCandidate.toString()}"
+
+                                                        <button th:if="${electionList.isCandidate.toString()=='NO'&& electionList.isSupporter.toString()=='NO'}"
+                                                                th:data="${electionList.voterNo}"
+                                                                class="btn btn-sm btn-info btnNomination">Nomination Paper</button>
+
+                                                            <button th:if="${electionList.isCandidate.toString()=='YES'}"
+                                                                    class="btn btn-sm btn-default">Already submitted</button>
+
+                                                        <span th:switch="${electionList.isSupporter.toString()}"
                                                               th:remove="tag">
-                                                        <button th:case="'NO'" th:data="${electionList.voterNo}"
-                                                                class="btn btn-info btnNomination">Nomination Paper</button>
                                                             <button th:case="'YES'"
-                                                                    class="btn btn-default">Already submitted</button>
-                                                        </span>
+                                                                    th:data="${electionList.voterNo+'-'+electionList.election.electionId}"
+                                                                    class="btn btn-sm btn-danger btnSupporterAction">support confirm</button>
+                                                            </span>
+                                                        <!--<button th:if="${electionList.isCandidate.toString()=='NO'&& electionList.isSupporter.toString()=='NO'}">fdsfdfd</button>-->
                                                     </td>
                                                     </tfoot>
                                                 </table>
@@ -119,7 +132,8 @@
                             </tr>
                         </table>
                         <div class="pull-right">
-                            <button type="submit" class="btn btn-default">ok</button>
+                            <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-sm btn-info">ok</button>
                         </div>
                     </form>
 
@@ -128,6 +142,53 @@
         </div>
     </div>
     <!--===================================-->
+    <!--=================supporter Action modal==================================-->
+    <div class="modal  fade" tabindex="-1" role="dialog"
+         aria-hidden="true" id="actionForSupporterApproveModal">
+        <div class="modal-dialog ">
+            <div class="panel panel-success">
+                <div class="panel-heading">Supporter Approval
+                    <span class="center text-danger" id="nominationDeadLine">Time Over</span>
+                    <span id="nominationPanelHeaderStatus" class="label label-lg pull-right">PANDING</span>
+                </div>
+                <div id="confirmNominationModalBody" style="" class="panel-body">
+                    <form th:method="POST" th:action="@{/nominationAccept}">
+                        <table class="table">
+                            <tr>
+                                <td>Voter ID:</td>
+                                <td>
+                                    <input type="hidden" name="CandidateElectionId" id="CandidateElectionId"/>
+                                    <input type="hidden" name="nominationSupporterId" id="nominationSupporterId"/>
+                                    <input name="candidateVoterId" id="candidateVoterId" type="text"
+                                           class="form-control" readonly></td>
+                                <td rowspan="3">
+                                    <img alt="not uploaded"
+                                         id="candidateProfilePic" style="width: 120px; height: 135px"
+                                         class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Candidate Name:</td>
+                                <td><input id="candidateFullName" type="text" class="form-control" readonly></td>
+                            </tr>
+                            <tr>
+                                <td>Support Status:</td>
+                                <td id="statusInput">
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-sm btn-info btnConfirmNominatonSupport">ok</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--=================supporter Action [end]==================================-->
+
     <footer class=" main-footer
                                 ">
         <div class="pull-right hidden-xs">
@@ -151,6 +212,38 @@
             var recipient = $(this).attr('data');
             $('#candidateVoterNo').val(recipient);
             $('#errorDetails').modal({backdrop: 'static', keyboard: false});
+        });
+        $('.btnSupporterAction').on('click', function (e) {
+            var recipient = $(this).attr('data');
+            $.ajax({
+                type: 'POST',
+                url: '/forSupporterInfo',
+                data: {"id": recipient, "_csrf": $("input[name=_csrf]").val()},
+                async: false,
+                success: function (resp) {
+                    $("#candidateVoterId").val(resp.voterList.voterNo);
+                    $("#candidateProfilePic").attr("src", resp.image);
+                    $("#candidatencStatus").val(resp.status);
+                    $("#candidateFullName").val(resp.name);
+                    if (resp.status === 'PENDING') {
+                        $('.btnConfirmNominatonSupport').prop('disabled', false);
+                        $('#confirmNominationModalBody').removeClass('approved');
+                        $("#CandidateElectionId").val(resp.candidateId);
+                        $("#nominationSupporterId").val(resp.supporterId);
+                        $("#nominationPanelHeaderStatus").html('<span class="label-warning">' + resp.status + '</span>');
+                        $("#nominationDeadLine").html('( Dead Line : ' + resp.election.electionSchedule.nominationCloseDate + ')');
+                        $("#statusInput").html('<select name="userStatus" required class="form-control"> <option selected disabled>PENDING</option><option value="APPROVED">APPROVED</option> <option value="REJECTED">REJECTED</option></select>');
+                    } else if (resp.status === 'APPROVED') {
+                        $('.btnConfirmNominatonSupport').prop('disabled', true);
+                        $('#confirmNominationModalBody').addClass('approved');
+                        $("#nominationPanelHeaderStatus").html('<span class="label-success">' + resp.status + '</span>');
+                        $("#nominationDeadLine").html('( Approved/Reject at : ' + resp.supporterApproveDate + ')');
+                        $("#statusInput").html('<input type="text" readonly class="form-control" value="' + resp.status + '"/>');
+                    }
+
+                }
+            });
+            $('#actionForSupporterApproveModal').modal({backdrop: 'static', keyboard: false});
         });
     });
 </script>

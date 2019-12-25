@@ -153,6 +153,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.full.js"></script>
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -183,6 +184,9 @@
                 }
             });
         });
+        $('#validDate').datepicker({
+            dateFormat: 'yy-m-dd'
+        })
     });
 </script>
 </body>

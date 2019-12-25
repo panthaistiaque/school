@@ -11,4 +11,6 @@ public class ConstantUtil {
     public static final int VOTER_REQUEST_REJECT_NOTIFICATION =5;
     public static final int NOMINATION_REJECT_NOTIFY_SAME_ID =6;
     public static final int NOMINATION_REJECT_NOTIFY_INVALID_SUPPORTER =7;
+    public static final int NOMINATION_APPROVED_BY_SUPPORTER =8;
+    public static final int NOMINATION_REJECT_BY_SUPPORTER =9;
 }
