@@ -11,4 +11,6 @@ public interface VoterListService {
     void save(String code, Integer userId);
     List<VoterList> findAllByUserId(Integer userId);
     List<VoterList> nominationAbleElectionList(Integer userId);
+    List<VoterList> voteAbleElectionList(Integer userId);
+    List allCandidateListForVote(String electionCode,Integer userId);
 }

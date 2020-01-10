@@ -17,4 +17,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
     Candidate findByCandidateIdAndSupporterIdAndStatusAndElectionElectionScheduleNominationCloseDateGreaterThanEqualAndVoterListVoterNo(Integer candidateId, Long supporterId, Status status, String nominationCloseDate, Long voterNo);
 
     List findAllByElectionElectionIdAndStatusAndElectionValidDateGreaterThanEqual(Integer electionId, Status status, String validDate);
+
+//    List findAllByStatusElectionElectionCodeElectionStatusElectionElectionScheduleElectionDate(Status status, String electionCode, Status electionStatus, String electionDate);
+    List findAllByStatusAndElectionElectionCodeAndElectionStatusAndElectionElectionScheduleElectionDate(Status status, String electionCode, Status electionStatus,String electionDate);
 }

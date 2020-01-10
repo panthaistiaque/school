@@ -15,9 +15,13 @@ import com.istiaque.EVM.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.unit.DataUnit;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.List;
+
+import static com.istiaque.EVM.util.DateUtil.currentDate;
 
 /**
  * Created by User on 12/12/2019.
@@ -80,11 +84,14 @@ public class CandidateServiceImp implements CandidateService {
 
     @Override
     public Candidate findByElectionElectionIdAndVoterListVoterNo(Integer electionId, Long voterNo) {
-        return candidateRepository.findByElectionElectionIdAndSupporterIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(electionId,voterNo, DateUtil.currentDate());
+
+        return candidateRepository.findByElectionElectionIdAndSupporterIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(electionId,voterNo, currentDate());
     }
 
     @Override
     public List getAllCandidate(Integer electionId) {
-        return candidateRepository.findAllByElectionElectionIdAndStatusAndElectionValidDateGreaterThanEqual(electionId,Status.APPROVED,DateUtil.currentDate());
+        List list = candidateRepository.findAllByElectionElectionIdAndStatusAndElectionValidDateGreaterThanEqual(electionId,Status.APPROVED, currentDate());
+
+        return list;
     }
 }

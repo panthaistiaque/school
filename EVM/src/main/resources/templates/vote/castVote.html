@@ -44,20 +44,25 @@
         <!-- Main content -->
         <section class="content">
             <div class="panel-group" id="accordion">
-                <span th:each="voteList :${list}" th:remove="tag">
-                    <div class="panel panel-info">
-                        <div class="panel-body">
-                            <span class="pull-left"
-                                  th:text="${voteList.election.electionName+' ('+voteList.election.electionCode+')'}">ffffffffffff</span>
-                            <span class="pull-right">
-                                <div class="btn-group" role="group">
-                                    <button th:data="${voteList.election.electionId}"
-                                            class="btn btn-xs btn-info btnCandidate">candidate</button>
-                                    <a th:href="${'/castVote?p='+voteList.election.electionCode}" class="btn btn-xs btn-info">vote</a>
+                <span th:if="${#lists.size(list)>0}" th:remove="tag">
+                    <form th:action="@{/confirmVote}" th:method="POST">
+                        <span th:each="candidateList :${list}" th:remove="tag">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <span class="pull-left"
+                                          th:text="${candidateList.name}">ffffffffffff</span>
+                                    <span class="pull-right">
+                                        <input type="radio" name="vote" th:value="${candidateList.candidateId}"/>
+                                    </span>
                                 </div>
-                            </span>
-                        </div>
-                    </div>
+                            </div>
+                        </span>
+                        <br>
+                        <button type="submit" class="btn btn-sm btn-info pull-right">submit</button>
+                    </form>
+                </span>
+                <span th:if="${#lists.size(list)<1}" th:remove="tag">
+                    <h1>Maybe you are in wrong place</h1>
                 </span>
             </div>
         </section>

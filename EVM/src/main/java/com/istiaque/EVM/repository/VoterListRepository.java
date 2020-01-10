@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface VoterListRepository extends JpaRepository<VoterList, Integer> {
     List<VoterList> findAllByUserId(Integer userId);
-    List<VoterList> findAllByUserIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(Integer userId,String nominationCloseDate);
     VoterList findByVoterNo(Long voterNo);
+    List<VoterList> findAllByUserIdAndElectionElectionScheduleNominationCloseDateGreaterThanEqual(Integer userId,String nominationCloseDate);
+    List<VoterList> findAllByUserIdAndElectionValidDateGreaterThanEqual(Integer userId,String validDate);
+    VoterList findByUserIdAndElectionElectionCode(Integer userId, String electionCode);
 }

@@ -1,19 +1,18 @@
 package com.istiaque.EVM.controllar;
 
-import com.istiaque.EVM.model.Candidate;
-import com.istiaque.EVM.model.Profile;
-import com.istiaque.EVM.model.User;
-import com.istiaque.EVM.model.VoterList;
+import com.istiaque.EVM.model.*;
+import com.istiaque.EVM.model.enam.Status;
 import com.istiaque.EVM.repository.CandidateRepository;
-import com.istiaque.EVM.service.CandidateService;
-import com.istiaque.EVM.service.ElectionService;
-import com.istiaque.EVM.service.NominationService;
-import com.istiaque.EVM.service.VoterListService;
+import com.istiaque.EVM.repository.VoterListRepository;
+import com.istiaque.EVM.repository.VoterTurnoutRepository;
+import com.istiaque.EVM.service.*;
+import com.istiaque.EVM.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ansi.Ansi8BitColor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.unit.DataUnit;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,6 +35,12 @@ public class VoteController {
     CandidateService candidateService;
     @Autowired
     NominationService nominationService;
+    @Autowired
+    CandidateRepository candidateRepository;
+    @Autowired
+    BallotService ballotService;
+    @Autowired
+    VoterTurnoutRepository voterTurnoutRepository;
 
     @GetMapping("voterrequest")
     public ModelAndView index(ModelAndView modelAndView, @AuthenticationPrincipal User user, @ModelAttribute("mess") String s) {
@@ -51,12 +56,12 @@ public class VoteController {
     public ModelAndView saveVoter(ModelAndView modelAndView, HttpServletRequest request, HttpSession session, RedirectAttributes redirect) {
         String s = request.getParameter("electionCode");
         Profile profile = (Profile) session.getAttribute("profile");
-       if(profile.getUser()!=null){
-           voterListService.save(s, profile.getUser().getId());
-           redirect.addFlashAttribute("mess", "Your request accepted, you will be notify shortly.");
-       }else {
-           redirect.addFlashAttribute("mess", "Plz set your profile first");
-       }
+        if (profile.getUser() != null) {
+            voterListService.save(s, profile.getUser().getId());
+            redirect.addFlashAttribute("mess", "Your request accepted, you will be notify shortly.");
+        } else {
+            redirect.addFlashAttribute("mess", "Plz set your profile first");
+        }
         modelAndView.setViewName("redirect:/voterrequest");
         return modelAndView;
     }
@@ -85,10 +90,10 @@ public class VoteController {
         return modelAndView;
     }
 
-    @ResponseBody
+    //    @ResponseBody
     @GetMapping("/cast")
     public ModelAndView getAllVoteAbleElection(ModelAndView modelAndView, @AuthenticationPrincipal User user) {
-        modelAndView.addObject("list", voterListService.findAllByUserId(user.getId()));
+        modelAndView.addObject("list", voterListService.voteAbleElectionList(user.getId()));
         modelAndView.setViewName("vote/vote");
         return modelAndView;
     }
@@ -126,5 +131,29 @@ public class VoteController {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    @GetMapping("/castVote")
+    public ModelAndView commitVote(ModelAndView modelAndView, @AuthenticationPrincipal User user, HttpServletRequest request) {
+        String s = request.getParameter("p");
+        System.out.println(s);
+        VoterTurnout voterTurnout = voterTurnoutRepository.findByElectionCodeAndUserId(s, user.getId());
+        if (voterTurnout != null) {
+            modelAndView.addObject("list",null);
+        } else {
+            modelAndView.addObject("list", voterListService.allCandidateListForVote(s, user.getId()));
+        }
+        modelAndView.setViewName("vote/castVote");
+        return modelAndView;
+    }
+
+    @PostMapping("/confirmVote")
+    public ModelAndView confirmVote(ModelAndView modelAndView, @AuthenticationPrincipal User user, HttpServletRequest request) {
+        String referer = request.getHeader("Referer").split("/?p=")[1];
+        System.out.println(referer);
+        Integer in = Integer.valueOf(request.getParameter("vote"));
+        ballotService.castBallot(in, user.getId(), referer);
+        modelAndView.setViewName("redirect:/cast");
+        return modelAndView;
     }
 }
